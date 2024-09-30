@@ -1,146 +1,269 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Bus, Clock, MapPin, Users } from "lucide-react"
+import React, { useState } from "react";
+import { Input } from "@/components/ui/input"; // ShadCN Input component
+import { Button } from "@/components/ui/button"; // ShadCN Button component
+import { Progress } from "@/components/ui/progress"; // ShadCN Progress component
+import { Card, CardHeader, CardContent } from "@/components/ui/card"; // ShadCN Card components
 
-export default function BusSchedulingDashboard() {
-  const routes = [
-    {
-      id: 1,
-      name: "Route 1",
-      stops: 6,
-      duration: "5h 00m",
-      distance: "120 km",
-      vehicle: "Truck 1",
-      driver: "John Doe",
-      startTime: "8:00 AM",
-      endTime: "1:00 PM",
-      schedule: [
-        { time: "8:00", stop: "Stop 1" },
-        { time: "9:00", stop: "Stop 2" },
-        { time: "10:00", stop: "Stop 3" },
-        { time: "11:00", stop: "Stop 4" },
-        { time: "12:00", stop: "Stop 5" },
-        { time: "13:00", stop: "Stop 6" },
-      ],
-    },
-    {
-      id: 2,
-      name: "Route 2",
-      stops: 6,
-      duration: "5h 00m",
-      distance: "120 km",
-      vehicle: "Truck 2",
-      driver: "Jane Smith",
-      startTime: "9:00 AM",
-      endTime: "2:00 PM",
-      schedule: [
-        { time: "9:00", stop: "Stop 1" },
-        { time: "10:00", stop: "Stop 2" },
-        { time: "11:00", stop: "Stop 3" },
-        { time: "12:00", stop: "Stop 4" },
-        { time: "13:00", stop: "Stop 5" },
-        { time: "14:00", stop: "Stop 6" },
-      ],
-    },
-  ]
+const packagesData = [
+  {
+    id: "PK432",
+    weight: "2 kg",
+    transport: "Airplane",
+    status: "In Transit",
+    trackingHistory: [
+      { location: "Delhi", date: "2024-09-25", transport: "Airplane", description: "Shipped from Delhi" },
+      { location: "Chennai", date: "2024-09-26", transport: "Train", description: "Arrived at Chennai" },
+      { location: "Coimbatore", date: "2024-09-27", transport: "Truck", description: "Delivered to Coimbatore" },
+    ],
+  },
+  {
+    id: "PK472",
+    weight: "5 kg",
+    transport: "Train",
+    status: "Delivered",
+    trackingHistory: [
+      { location: "Mumbai", date: "2024-09-24", transport: "Train", description: "Shipped from Mumbai" },
+      { location: "Bangalore", date: "2024-09-25", transport: "Truck", description: "Delivered to Bangalore" },
+    ],
+  },
+  {
+    id: "PK232",
+    weight: "1.5 kg",
+    transport: "Airplane",
+    status: "In Transit",
+    trackingHistory: [
+      { location: "Delhi", date: "2024-09-26", transport: "Airplane", description: "Shipped from Delhi" },
+      { location: "Hyderabad", date: "2024-09-27", transport: "Truck", description: "In transit to Hyderabad" },
+    ],
+  },
+  {
+    id: "PK4329",
+    weight: "3 kg",
+    transport: "Ship",
+    status: "In Transit",
+    trackingHistory: [
+      { location: "Mumbai", date: "2024-09-20", transport: "Ship", description: "Shipped from Mumbai" },
+      { location: "Chennai", date: "2024-09-22", transport: "Ship", description: "Arrived at Chennai" },
+      { location: "Kochi", date: "2024-09-23", transport: "Truck", description: "In transit to Kochi" },
+    ],
+  },
+  {
+    id: "PK4325",
+    weight: "10 kg",
+    transport: "Train",
+    status: "Delivered",
+    trackingHistory: [
+      { location: "Pune", date: "2024-09-21", transport: "Train", description: "Shipped from Pune" },
+      { location: "Ahmedabad", date: "2024-09-22", transport: "Truck", description: "Delivered to Ahmedabad" },
+    ],
+  },
+  {
+    id: "PK432",
+    weight: "7 kg",
+    transport: "Airplane",
+    status: "In Transit",
+    trackingHistory: [
+      { location: "Delhi", date: "2024-09-25", transport: "Airplane", description: "Shipped from Delhi" },
+      { location: "Kolkata", date: "2024-09-27", transport: "Truck", description: "In transit to Kolkata" },
+    ],
+  },
+  {
+    id: "PK4326",
+    weight: "4 kg",
+    transport: "Truck",
+    status: "Delivered",
+    trackingHistory: [
+      { location: "Bangalore", date: "2024-09-23", transport: "Truck", description: "Shipped from Bangalore" },
+      { location: "Mysore", date: "2024-09-24", transport: "Truck", description: "Delivered to Mysore" },
+    ],
+  },
+  {
+    id: "8",
+    weight: "8 kg",
+    transport: "Airplane",
+    status: "In Transit",
+    trackingHistory: [
+      { location: "Delhi", date: "2024-09-28", transport: "Airplane", description: "Shipped from Delhi" },
+      { location: "Hyderabad", date: "2024-09-29", transport: "Truck", description: "In transit to Hyderabad" },
+    ],
+  },
+  {
+    id: "9",
+    weight: "6 kg",
+    transport: "Train",
+    status: "In Transit",
+    trackingHistory: [
+      { location: "Chennai", date: "2024-09-20", transport: "Train", description: "Shipped from Chennai" },
+      { location: "Coimbatore", date: "2024-09-21", transport: "Truck", description: "In transit to Coimbatore" },
+    ],
+  },
+  {
+    id: "10",
+    weight: "3.5 kg",
+    transport: "Airplane",
+    status: "Delivered",
+    trackingHistory: [
+      { location: "Delhi", date: "2024-09-22", transport: "Airplane", description: "Shipped from Delhi" },
+      { location: "Mumbai", date: "2024-09-23", transport: "Truck", description: "Delivered to Mumbai" },
+    ],
+  },
+  {
+    id: "11",
+    weight: "12 kg",
+    transport: "Train",
+    status: "In Transit",
+    trackingHistory: [
+      { location: "Mumbai", date: "2024-09-18", transport: "Train", description: "Shipped from Mumbai" },
+      { location: "Pune", date: "2024-09-19", transport: "Truck", description: "In transit to Pune" },
+      { location: "Nashik", date: "2024-09-20", transport: "Truck", description: "In transit to Nashik" },
+    ],
+  },
+  {
+    id: "12",
+    weight: "9 kg",
+    transport: "Ship",
+    status: "Delivered",
+    trackingHistory: [
+      { location: "Kochi", date: "2024-09-10", transport: "Ship", description: "Shipped from Kochi" },
+      { location: "Mangalore", date: "2024-09-12", transport: "Truck", description: "Delivered to Mangalore" },
+    ],
+  },
+  {
+    id: "13",
+    weight: "2.5 kg",
+    transport: "Airplane",
+    status: "In Transit",
+    trackingHistory: [
+      { location: "Delhi", date: "2024-09-29", transport: "Airplane", description: "Shipped from Delhi" },
+      { location: "Lucknow", date: "2024-09-30", transport: "Truck", description: "In transit to Lucknow" },
+    ],
+  },
+  {
+    id: "14",
+    weight: "4.5 kg",
+    transport: "Train",
+    status: "Delivered",
+    trackingHistory: [
+      { location: "Ahmedabad", date: "2024-09-15", transport: "Train", description: "Shipped from Ahmedabad" },
+      { location: "Surat", date: "2024-09-16", transport: "Truck", description: "Delivered to Surat" },
+    ],
+  },
+  {
+    id: "15",
+    weight: "5.5 kg",
+    transport: "Ship",
+    status: "In Transit",
+    trackingHistory: [
+      { location: "Chennai", date: "2024-09-28", transport: "Ship", description: "Shipped from Chennai" },
+      { location: "Kochi", date: "2024-09-29", transport: "Truck", description: "In transit to Kochi" },
+    ],
+  },
+  {
+    id: "16",
+    weight: "8 kg",
+    transport: "Airplane",
+    status: "In Transit",
+    trackingHistory: [
+      { location: "Delhi", date: "2024-09-26", transport: "Airplane", description: "Shipped from Delhi" },
+      { location: "Kolkata", date: "2024-09-27", transport: "Truck", description: "In transit to Kolkata" },
+    ],
+  },
+  {
+    id: "17",
+    weight: "3 kg",
+    transport: "Train",
+    status: "Delivered",
+    trackingHistory: [
+      { location: "Hyderabad", date: "2024-09-22", transport: "Train", description: "Shipped from Hyderabad" },
+      { location: "Warangal", date: "2024-09-23", transport: "Truck", description: "Delivered to Warangal" },
+    ],
+  },
+  {
+    id: "18",
+    weight: "6.5 kg",
+    transport: "Airplane",
+    status: "In Transit",
+    trackingHistory: [
+      { location: "Delhi", date: "2024-09-25", transport: "Airplane", description: "Shipped from Delhi" },
+      { location: "Mumbai", date: "2024-09-26", transport: "Truck", description: "In transit to Mumbai" },
+    ],
+  },
+  {
+    id: "19",
+    weight: "2 kg",
+    transport: "Train",
+    status: "Delivered",
+    trackingHistory: [
+      { location: "Bangalore", date: "2024-09-24", transport: "Train", description: "Shipped from Bangalore" },
+      { location: "Hyderabad", date: "2024-09-25", transport: "Truck", description: "Delivered to Hyderabad" },
+    ],
+  },
+  {
+    id: "20",
+    weight: "1 kg",
+    transport: "Airplane",
+    status: "In Transit",
+    trackingHistory: [
+      { location: "Chennai", date: "2024-09-29", transport: "Airplane", description: "Shipped from Chennai" },
+      { location: "Delhi", date: "2024-09-30", transport: "Truck", description: "In transit to Delhi" },
+    ],
+  },
+];
 
-  const colors = [
-    "bg-pink-200 dark:bg-pink-700",
-    "bg-blue-200 dark:bg-blue-700",
-    "bg-yellow-200 dark:bg-yellow-700",
-    "bg-green-200 dark:bg-green-700",
-    "bg-purple-200 dark:bg-purple-700",
-    "bg-orange-200 dark:bg-orange-700",
-  ]
+
+const BusShedulingDashboard = () => {
+  const [searchId, setSearchId] = useState("");
+
+  const filteredPackages = packagesData.filter((pkg) => pkg.id.includes(searchId));
 
   return (
-    <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
-      <div className="w-64 bg-white dark:bg-gray-800 p-4 border-r dark:border-gray-700">
-        <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Route Layers</h2>
-        <div className="space-y-2">
-          {["Route", "Stops", "Time Windows", "Vehicle Capacity"].map((layer) => (
-            <div key={layer} className="flex items-center">
-              <Checkbox id={layer} />
-              <label htmlFor={layer} className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-200">
-                {layer}
-              </label>
-            </div>
-          ))}
-        </div>
+    <div className="container mx-auto p-4 bg-white dark:bg-gray-900 min-h-screen">
+      <h1 className="text-4xl font-bold mb-8 text-gray-800 dark:text-gray-100">Package Tracking</h1>
+      
+      <div className="mb-4 flex justify-center">
+        <Input 
+          type="text" 
+          placeholder="Search Package ID" 
+          value={searchId} 
+          onChange={(e) => setSearchId(e.target.value)} 
+          className="mr-2"
+        />
+        <Button onClick={() => setSearchId("")}>Reset</Button>
       </div>
 
-      <div className="flex-1 p-8 overflow-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Bus Scheduling Dashboard</h1>
-          <Button>Optimize</Button>
-        </div>
-
-        {routes.map((route) => (
-          <Card key={route.id} className="mb-6 bg-white dark:bg-gray-800">
-            <CardHeader>
-              <CardTitle className="text-gray-900 dark:text-white">{route.name}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-6 gap-2 mb-4">
-                {route.schedule.map((stop, index) => (
-                  <div key={index} className={`p-2 rounded ${colors[index % colors.length]}`}>
-                    <div className="font-bold text-gray-900 dark:text-white">
-                      {`${route.id}-${String.fromCharCode(65 + index)}`}
-                    </div>
-                    <div className="text-xs text-gray-700 dark:text-gray-300">{stop.time}</div>
-                    <div className="text-xs text-gray-700 dark:text-gray-300">{stop.stop}</div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <div className="w-80 bg-white dark:bg-gray-800 p-4 border-l dark:border-gray-700">
-        <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Route Details</h2>
-        <ScrollArea className="h-[calc(100vh-8rem)]">
-          {routes.map((route) => (
-            <Card key={route.id} className="mb-4 bg-white dark:bg-gray-800">
-              <CardHeader>
-                <CardTitle className="text-gray-900 dark:text-white">{route.name}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="flex items-center">
-                    <MapPin className="w-4 h-4 mr-2 text-gray-900 dark:text-gray-200" />
-                    <span className="text-sm text-gray-900 dark:text-gray-200">Stops: {route.stops}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Clock className="w-4 h-4 mr-2 text-gray-900 dark:text-gray-200" />
-                    <span className="text-sm text-gray-900 dark:text-gray-200">Duration: {route.duration}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <MapPin className="w-4 h-4 mr-2 text-gray-900 dark:text-gray-200" />
-                    <span className="text-sm text-gray-900 dark:text-gray-200">Distance: {route.distance}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Bus className="w-4 h-4 mr-2 text-gray-900 dark:text-gray-200" />
-                    <span className="text-sm text-gray-900 dark:text-gray-200">Vehicle: {route.vehicle}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Users className="w-4 h-4 mr-2 text-gray-900 dark:text-gray-200" />
-                    <span className="text-sm text-gray-900 dark:text-gray-200">Driver: {route.driver}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Clock className="w-4 h-4 mr-2 text-gray-900 dark:text-gray-200" />
-                    <span className="text-sm text-gray-900 dark:text-gray-200">
-                      Time: {route.startTime} - {route.endTime}
-                    </span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </ScrollArea>
-      </div>
+      {filteredPackages.length === 0 ? (
+        <p className="text-center text-gray-500">No packages found.</p>
+      ) : (
+        <>
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold mb-4">Latest Updates</h2>
+            {filteredPackages.map((pkg) => (
+              <Card key={pkg.id} className="mb-4">
+                <CardHeader>
+                  <h3 className="font-semibold">Package ID: {pkg.id}</h3>
+                  <p>Status: {pkg.status}</p>
+                </CardHeader>
+                <CardContent>
+                  <p>Weight: {pkg.weight}</p>
+                  <p>Transport: {pkg.transport}</p>
+                  <Progress value={pkg.status === "Delivered" ? 100 : 50} className="mb-2" />
+                  <h4 className="font-semibold">Tracking History:</h4>
+                  <ul>
+                    {pkg.trackingHistory.map((history, index) => (
+                      <li key={index} className="text-sm text-gray-600">
+                        {history.date} - {history.description} ({history.location} via {history.transport})
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </>
+      )}
     </div>
-  )
-}
+  );
+};
+
+export default BusShedulingDashboard;
+
