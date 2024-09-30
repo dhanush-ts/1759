@@ -14,7 +14,7 @@ import {
 
 const NavigationLink = ({ href, className, children, isActiveClass = '' }) => {
   const location = useLocation()
-  const isActive = location.pathname === href
+  const isActive = href === "/" ? location.pathname === href : location.pathname.startsWith(href)
   return (
     <Link to={href} className={`${className} ${isActive ? isActiveClass : ''}`}>
       {children}
@@ -37,12 +37,12 @@ export default function SidebarContent() {
             href="/"
             isActiveClass="bg-gray-100 dark:bg-gray-800 text-primary"
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 dark:text-gray-400 hover:text-primary transition-colors mb-1"
-          >
+          end>
             <HomeIcon className="h-5 w-5" />
             Dashboard
           </NavigationLink>
           <NavigationLink
-            href="/vehicles"
+            href="/bus"
             isActiveClass="bg-gray-100 dark:bg-gray-800 text-primary"
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 dark:text-gray-400 hover:text-primary transition-colors mb-1"
           >
@@ -50,7 +50,7 @@ export default function SidebarContent() {
             Vehicles
           </NavigationLink>
           <NavigationLink
-            href="/routes"
+            href="/stop"
             isActiveClass="bg-gray-100 dark:bg-gray-800 text-primary"
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 dark:text-gray-400 hover:text-primary transition-colors mb-1"
           >
@@ -66,7 +66,7 @@ export default function SidebarContent() {
             Post Offices
           </NavigationLink>
           <NavigationLink
-            href="/staff"
+            href="/driver"
             isActiveClass="bg-gray-100 dark:bg-gray-800 text-primary"
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 dark:text-gray-400 hover:text-primary transition-colors mb-1"
           >

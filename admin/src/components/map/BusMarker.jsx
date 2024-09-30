@@ -1,5 +1,3 @@
-'use client'
-
 import React, { useState } from 'react'
 import { Marker, InfoWindow } from '@react-google-maps/api'
 import { useNavigate } from 'react-router-dom'

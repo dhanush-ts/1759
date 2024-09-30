@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState } from "react";
 import { GoogleMap } from '@react-google-maps/api';
 
-const MapView = (props) => {
+export const MapView = (props) => {
   const mapRef = useRef(null);
   const [position, setPosition] = useState({
     lat: 13.078339,

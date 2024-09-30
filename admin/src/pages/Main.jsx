@@ -15,6 +15,7 @@ import { getAllDriver } from '@/store/reducer/DriverStore';
 import { getAllRoute } from '@/store/reducer/RouteReducer';
 import BusSchedulingDashboard from './sheduling/Sheduling';
 import AnalyticsPage from './analytics/Analytics';
+import { PostOffices } from './postoffices/PostOffices';
 
 
 const Main = () => {
@@ -38,7 +39,8 @@ const Main = () => {
                         <Route element={<Bus />} path='/bus/*' />
                         <Route element={<Stop/>} path="/stop/*"/>
                         <Route element={<Driver/>} path="/driver/*"/>
-                        <Route element={<BusSchedulingDashboard/>} path="/sheduling/*"/>
+                        <Route element={<PostOffices/>} path="/post-offices/*"/>
+                        <Route element={<BusSchedulingDashboard/>} path="/scheduling/*"/>
                         <Route element={<AnalyticsPage/>} path="/analytics/*"/>
                         <Route element={<RouteScreen/>} path='/route/*'/>
                     </Routes>
