@@ -65,7 +65,7 @@ export default function SidebarContent() {
             <MapPinIcon className="h-5 w-5" />
             Post Offices
           </NavigationLink>
-          <NavigationLink
+          {/* <NavigationLink
             href="/driver"
             isActiveClass="bg-gray-100 dark:bg-gray-800 text-primary"
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 dark:text-gray-400 hover:text-primary transition-colors mb-1"
@@ -80,7 +80,7 @@ export default function SidebarContent() {
           >
             <CalendarIcon className="h-5 w-5" />
             Scheduling
-          </NavigationLink>
+          </NavigationLink> */}
           <NavigationLink
             href="/analytics"
             isActiveClass="bg-gray-100 dark:bg-gray-800 text-primary"

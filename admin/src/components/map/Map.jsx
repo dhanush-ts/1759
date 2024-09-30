@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState } from "react";
 import { GoogleMap } from '@react-google-maps/api';
 
-export const MapView = (props) => {
+export const MapView = ({children, style}) => {
   const mapRef = useRef(null);
   const [position, setPosition] = useState({
     lat: 13.078339,
@@ -25,7 +25,7 @@ export const MapView = (props) => {
   }
 
   return (
-    <div className="w-full h-full rounded-md overflow-hidden" style={props.style}>
+    <div className="w-full h-full rounded-md overflow-hidden" style={style}>
       <GoogleMap
         zoom={7}
         mapContainerStyle={{ width: '100%', height: '100%' }}
@@ -35,7 +35,7 @@ export const MapView = (props) => {
         mapContainerClassName="map-container"
         options={options} // Ensuring options are passed correctly
       >
-        {props.children}
+        {children}
       </GoogleMap>
     </div>
   );
